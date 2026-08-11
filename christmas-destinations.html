@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christmas 2026 Family Trip</title>
+  <style>
+    :root {
+      --strawberry-red: #ef233c;
+      --frozen-water: #d5f2e3;
+      --muted-teal: #73ba9b;
+      --deep-forest: #003e1f;
+      --flag-red: #d90429;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--deep-forest);
+      color: var(--frozen-water);
+      overflow-x: hidden;
+    }
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+    .slide-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .slide:nth-child(odd) .slide-content { direction: rtl; }
+    .slide:nth-child(odd) .slide-content > * { direction: ltr; }
+    .image-section {
+      position: relative;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--deep-forest) 0%, var(--deep-forest) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .image-section::before {
+      content: attr(data-emoji);
+      position: absolute;
+      font-size: 8rem;
+      opacity: 0.3;
+      z-index: 1;
+    }
+    .image-section img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+    .image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(26,26,46,0.3) 0%, rgba(26,26,46,0.6) 100%);
+    }
+    .info-section {
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(180deg, var(--deep-forest) 0%, #001a0d 100%);
+    }
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--frozen-water);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .theme-badge {
+      display: inline-block;
+      background: var(--strawberry-red);
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: rgba(115, 186, 155, 0.15);
+      border: 1px solid var(--muted-teal);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--muted-teal);
+      letter-spacing: 1px;
+      margin-bottom: 0.3rem;
+    }
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    h2 {
+      color: var(--muted-teal);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+    .activities-list {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+    .activities-list li {
+      padding: 0.5rem 0;
+      font-size: 1.1rem;
+      border-bottom: 1px solid rgba(115, 186, 155, 0.3);
+    }
+    .activities-list li:last-child { border-bottom: none; }
+    .pitch {
+      font-style: italic;
+      color: var(--frozen-water);
+      line-height: 1.7;
+      font-size: 1.1rem;
+      padding: 1.5rem;
+      background: rgba(239, 35, 60, 0.15);
+      border-left: 3px solid var(--flag-red);
+      border-radius: 0 8px 8px 0;
+    }
+    .contributor {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted-teal);
+    }
+    /* Title slide */
+    .title-slide {
+      background: linear-gradient(135deg, var(--deep-forest) 0%, #0d1a0d 50%, var(--deep-forest) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .title-slide h1 {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+    }
+    .title-slide .subtitle {
+      font-size: 1.8rem;
+      color: var(--frozen-water);
+      margin-bottom: 2rem;
+    }
+    .title-slide .date {
+      font-size: 1.2rem;
+      color: var(--muted-teal);
+      margin-bottom: 3rem;
+    }
+    .snowflakes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .snowflake {
+      position: absolute;
+      color: rgba(255,255,255,0.8);
+      font-size: 1.5rem;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }
+    }
+    /* Navigation dots */
+    .nav-dots {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(115, 186, 155, 0.3);
+      border: 2px solid var(--muted-teal);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .nav-dot.active, .nav-dot:hover {
+      background: var(--muted-teal);
+      transform: scale(1.3);
+    }
+    /* Voting slide */
+    .vote-slide {
+      background: linear-gradient(135deg, var(--strawberry-red) 0%, var(--deep-forest) 50%, var(--deep-forest) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem;
+    }
+    .vote-slide h1 { margin-bottom: 1rem; }
+    .vote-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+      max-width: 900px;
+    }
+    .vote-card {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid var(--muted-teal);
+      padding: 1.5rem 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    .vote-card:hover {
+      background: var(--muted-teal);
+      color: var(--deep-forest);
+      transform: translateY(-5px);
+    }
+    .vote-card.selected {
+      background: var(--strawberry-red);
+      color: white;
+      border-color: var(--strawberry-red);
+      transform: translateY(-5px);
+    }
+    /* Voting Form Styles */
+    .name-input-container {
+      margin-bottom: 1.5rem;
+      text-align: left;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .name-input-container label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--muted-teal);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .name-input-container input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 1.1rem;
+      border: 2px solid var(--muted-teal);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: var(--frozen-water);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .name-input-container input::placeholder {
+      color: rgba(213, 242, 227, 0.5);
+    }
+    .name-input-container input:focus {
+      border-color: var(--strawberry-red);
+      background: rgba(255,255,255,0.15);
+    }
+    #submit-vote {
+      margin-top: 2rem;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background: var(--strawberry-red);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.5;
+    }
+    #submit-vote:not(:disabled) {
+      opacity: 1;
+    }
+    #submit-vote:not(:disabled):hover {
+      background: var(--flag-red);
+      transform: scale(1.05);
+    }
+    #submit-vote:disabled {
+      cursor: not-allowed;
+    }
+    .vote-message {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      display: none;
+    }
+    .vote-message.success {
+      display: block;
+      background: rgba(115, 186, 155, 0.3);
+      color: var(--frozen-water);
+      border: 1px solid var(--muted-teal);
+    }
+    .vote-message.error {
+      display: block;
+      background: rgba(239, 35, 60, 0.3);
+      color: var(--frozen-water);
+      border: 1px solid var(--strawberry-red);
+    }
+    .vote-message.loading {
+      display: block;
+      background: rgba(115, 186, 155, 0.2);
+      color: var(--muted-teal);
+    }
+    #vote-results-container {
+      text-align: center;
+    }
+    #results-display {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .result-item {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid var(--muted-teal);
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: left;
+    }
+    .result-item .dest-name {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+    .result-item .vote-count {
+      color: var(--muted-teal);
+      font-size: 0.9rem;
+    }
+    .result-bar {
+      height: 6px;
+      background: rgba(115, 186, 155, 0.3);
+      border-radius: 3px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    .result-bar-fill {
+      height: 100%;
+      background: var(--strawberry-red);
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      .slide-content { grid-template-columns: 1fr; }
+      .image-section { min-height: 50vh; }
+      h1 { font-size: 2.5rem; }
+      .info-section { padding: 2rem 1.5rem; }
+      .vote-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-dots { right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Dots -->
+  <nav class="nav-dots" id="navDots"></nav>
+
+  <!-- Slide 0: Title -->
+  <section class="slide title-slide" id="slide-0">
+    <div class="snowflakes" id="snowflakes"></div>
+    <h1>🎄 Christmas 2026 🎄</h1>
+    <p class="subtitle">A Family Adventure Awaits</p>
+    <p class="date">December 22 - 27, 2026</p>
+    <p style="font-size: 1.1rem; color: var(--frozen-water); opacity: 0.8;">
+      Scroll to explore 8 amazing destinations<br>
+      <span style="color: var(--muted-teal);">10 guests • 6+ bedrooms • 5 magical nights</span>
+    </p>
+    <div style="margin-top: 3rem; animation: bounce 2s infinite;">
+      <span style="font-size: 2rem;">↓</span>
+    </div>
+    <style>
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(10px); }
+      }
+    </style>
+  </section>
+
+  <!-- Slide 1: Puerto Rico -->
+  <section class="slide" id="slide-1">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🌴">
+        <img src="puerto rico.jpg" alt="Puerto Rico Beach" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Puerto Rico</h1>
+        <span class="theme-badge">🌴 Tropical Paradise</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">84°F / 29°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$2,250 - $6,000</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🌊 Surf the waves at Rincon Beach</li>
+          <li>🌲 Hike El Yunque Rainforest trails</li>
+          <li>✨ Kayak bioluminescent bays at night</li>
+          <li>🏰 Explore historic Old San Juan</li>
+          <li>🏖️ Relax on Flamenco Beach in Culebra</li>
+        </ul>
+        <div class="pitch">
+          "No passport needed! Perfect blend of tropical beaches, rich culture, and adventure. Fly direct, enjoy island time, and celebrate Christmas with coquito in hand."
+        </div>
+        <p class="contributor">Suggested by: Jack, Tabbie</p>
+      </div>
+    </div>
+  </section>
+  <!-- Slide 2: Palm Springs -->
+  <section class="slide" id="slide-2">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🏜️">
+        <img src="palm springs.jpg" alt="Palm Springs" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Palm Springs, CA</h1>
+        <span class="theme-badge">🏜️ Desert Oasis</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">68°F / 20°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$2,500 - $6,000</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🏜️ Day trip to Joshua Tree National Park</li>
+          <li>🚡 Ride the Palm Springs Aerial Tramway</li>
+          <li>💆 Relax at world-class desert spas</li>
+          <li>🎨 Explore mid-century modern architecture</li>
+          <li>🌄 Hike Indian Canyons at sunrise</li>
+        </ul>
+        <div class="pitch">
+          "Escape the cold without leaving the country. Stunning desert landscapes, poolside relaxation, and perfect weather for outdoor adventures. A sophisticated retreat for the whole family."
+        </div>
+        <p class="contributor">Suggested by: Sam</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3: Texas Hill Country -->
+  <section class="slide" id="slide-3">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🤠">
+        <img src="texas hill country.jpg" alt="Texas Hill Country" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Texas Hill Country</h1>
+        <span class="theme-badge">🤠 Southern Charm</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">65°F / 18°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$2,250 - $4,750</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🚣 Stroll the San Antonio River Walk</li>
+          <li>🍷 Wine tasting in Fredericksburg</li>
+          <li>🏰 Visit The Alamo and historic missions</li>
+          <li>🎄 See holiday lights on the River Walk</li>
+          <li>🍖 Authentic Texas BBQ trail</li>
+        </ul>
+        <div class="pitch">
+          "Big skies, warm hospitality, and endless charm. From festive River Walk lights to rolling hills and vineyards, Texas delivers a unique holiday experience."
+        </div>
+        <p class="contributor">Suggested by: Tabbie, Sam</p>
+      </div>
+    </div>
+  </section>
+  <!-- Slide 4: Salt Lake City -->
+  <section class="slide" id="slide-4">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="⛷️">
+        <img src="salt lake city.jpg" alt="Salt Lake City" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Salt Lake City, UT</h1>
+        <span class="theme-badge">⛷️ Ski Paradise</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">38°F / 3°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$3,000 - $9,000</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>⛷️ World-class skiing at Park City</li>
+          <li>🎄 Temple Square Christmas lights</li>
+          <li>🛷 Tubing and sledding for all ages</li>
+          <li>♨️ Relax in natural hot springs</li>
+          <li>🎿 Snowboarding at Deer Valley</li>
+        </ul>
+        <div class="pitch">
+          "The Greatest Snow on Earth! Wake up to powdery slopes, cozy up by the fire, and experience a true winter wonderland. Perfect for ski lovers and snow bunnies alike."
+        </div>
+        <p class="contributor">Suggested by: Stephen</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5: Switzerland -->
+  <section class="slide" id="slide-5">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🏔️">
+        <img src="switzerland.jpg" alt="Switzerland" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Switzerland</h1>
+        <span class="theme-badge">🏔️ Alpine Magic</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">36°F / 2°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$3,600 - $10,000</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🏔️ Scenic train to Jungfrau summit</li>
+          <li>🛷 Traditional Swiss sledding runs</li>
+          <li>🫕 Fondue and raclette feasts</li>
+          <li>🎿 Ski the legendary Swiss Alps</li>
+          <li>🎄 Christmas markets in Zurich</li>
+        </ul>
+        <div class="pitch">
+          "A storybook Christmas come to life. Snow-capped Alps, charming villages, and world-class skiing. The ultimate winter escape for those seeking magic and adventure."
+        </div>
+        <p class="contributor">Suggested by: Sam</p>
+      </div>
+    </div>
+  </section>
+  <!-- Slide 6: Costa Rica -->
+  <section class="slide" id="slide-6">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🦜">
+        <img src="costa rica.jpg" alt="Costa Rica" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Costa Rica</h1>
+        <span class="theme-badge">🦜 Tropical Adventure</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">86°F / 30°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$2,250 - $6,000</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🦥 Wildlife spotting at Manuel Antonio</li>
+          <li>♨️ Soak in Arenal volcano hot springs</li>
+          <li>🌳 Zip-line through cloud forest canopy</li>
+          <li>🏄 Learn to surf on Pacific waves</li>
+          <li>🐒 Meet monkeys in the rainforest</li>
+        </ul>
+        <div class="pitch">
+          "Pura Vida! Escape winter entirely with tropical beaches, incredible wildlife, and adventure around every corner. Safe, welcoming, and full of natural wonders."
+        </div>
+        <p class="contributor">Suggested by: Sam</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7: Blackberry Farm -->
+  <section class="slide" id="slide-7">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🏡">
+        <img src="smokey mountains.jpg" alt="Smoky Mountains" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Blackberry Farm, TN</h1>
+        <span class="theme-badge">🏡 Southern Luxury</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">48°F / 9°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$3,000 - $6,000</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🎄 Magical Dollywood Christmas shows</li>
+          <li>🏔️ Hike Great Smoky Mountains trails</li>
+          <li>🍳 Farm-to-table culinary experiences</li>
+          <li>🎣 Fly fishing in mountain streams</li>
+          <li>🌲 Cozy cabin relaxation</li>
+        </ul>
+        <div class="pitch">
+          "Where Southern hospitality meets Smoky Mountain beauty. A peaceful retreat with world-class dining, stunning views, and Dollywood magic just down the road."
+        </div>
+        <p class="contributor">Suggested by: Sam</p>
+      </div>
+    </div>
+  </section>
+  <!-- Slide 8: Anna Maria Island -->
+  <section class="slide" id="slide-8">
+    <div class="slide-content">
+      <div class="image-section" data-emoji="🌅">
+        <img src="anna maria island.jpg" alt="Anna Maria Island" loading="lazy">
+        <div class="image-overlay"></div>
+      </div>
+      <div class="info-section">
+        <h1>Anna Maria Island, FL</h1>
+        <span class="theme-badge">🌅 Gulf Coast Charm</span>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Temperature</div>
+            <div class="stat-value">74°F / 23°C</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">5-Night Airbnb</div>
+            <div class="stat-value">$3,000 - $7,500</div>
+          </div>
+        </div>
+        <h2>🎯 Top Activities</h2>
+        <ul class="activities-list">
+          <li>🐬 Dolphin watching boat tours</li>
+          <li>🚣 Kayaking through mangroves</li>
+          <li>🌅 Beach sunsets every evening</li>
+          <li>🎨 Day trip to Sarasota arts district</li>
+          <li>🦀 Fresh Gulf seafood feasts</li>
+        </ul>
+        <div class="pitch">
+          "Old Florida charm with pristine beaches and stunning sunsets. Laid-back island vibes, crystal-clear Gulf waters, and perfect weather for beach days and exploration."
+        </div>
+        <p class="contributor">Suggested by: Jack</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 9: Voting -->
+  <section class="slide vote-slide" id="slide-9">
+    <div id="vote-form-container">
+      <h1>🎄 Cast Your Vote! 🎄</h1>
+      <p style="font-size: 1.3rem; margin-bottom: 1.5rem;">Which destination calls to you?</p>
+      
+      <!-- Name Input -->
+      <div class="name-input-container">
+        <label for="voter-name">Your Name</label>
+        <input type="text" id="voter-name" placeholder="Enter your name..." required>
+      </div>
+      
+      <p style="opacity: 0.8; margin-bottom: 1rem;">Select your top choice:</p>
+      <div class="vote-grid">
+        <div class="vote-card" data-destination="Puerto Rico" onclick="selectDestination(this)">🌴 Puerto Rico</div>
+        <div class="vote-card" data-destination="Palm Springs" onclick="selectDestination(this)">🏜️ Palm Springs</div>
+        <div class="vote-card" data-destination="Texas Hill Country" onclick="selectDestination(this)">🤠 Texas Hill Country</div>
+        <div class="vote-card" data-destination="Salt Lake City" onclick="selectDestination(this)">⛷️ Salt Lake City</div>
+        <div class="vote-card" data-destination="Switzerland" onclick="selectDestination(this)">🏔️ Switzerland</div>
+        <div class="vote-card" data-destination="Costa Rica" onclick="selectDestination(this)">🦜 Costa Rica</div>
+        <div class="vote-card" data-destination="Blackberry Farm" onclick="selectDestination(this)">🏡 Blackberry Farm</div>
+        <div class="vote-card" data-destination="Anna Maria Island" onclick="selectDestination(this)">🌅 Anna Maria</div>
+      </div>
+      
+      <button id="submit-vote" onclick="submitVote()" disabled>
+        🗳️ Submit My Vote
+      </button>
+      
+      <div id="vote-message" class="vote-message"></div>
+    </div>
+    
+    <!-- Results View (shown after voting) -->
+    <div id="vote-results-container" style="display: none;">
+      <h1>🎉 Thanks for Voting! 🎉</h1>
+      <p style="font-size: 1.3rem; margin-bottom: 1.5rem;" id="thank-you-message">Your vote has been recorded.</p>
+      <div id="results-display"></div>
+      <button onclick="showVoteForm()" style="margin-top: 2rem; background: var(--muted-teal);">
+        ← Vote Again
+      </button>
+    </div>
+    
+    <p style="margin-top: 2rem; font-size: 1.2rem; color: var(--muted-teal);">
+      🎁 Happy Holidays from Our Families to Yours! 🎁
+    </p>
+  </section>
+  <script>
+    // Generate navigation dots
+    const slides = document.querySelectorAll('.slide');
+    const navDots = document.getElementById('navDots');
+    slides.forEach((slide, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => slide.scrollIntoView({ behavior: 'smooth' });
+      navDots.appendChild(dot);
+    });
+
+    // Update active dot on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(slides).indexOf(entry.target);
+          document.querySelectorAll('.nav-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === idx);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    slides.forEach(s => observer.observe(s));
+
+    // Snowflakes
+    const snowContainer = document.getElementById('snowflakes');
+    const snowflakeChars = ['❄', '❅', '❆', '✻', '✼'];
+    for (let i = 0; i < 30; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.textContent = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+      flake.style.left = Math.random() * 100 + '%';
+      flake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      flake.style.animationDelay = (Math.random() * 5) + 's';
+      flake.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
+      snowContainer.appendChild(flake);
+    }
+
+    // ========== VOTING SYSTEM ==========
+    // SETUP INSTRUCTIONS:
+    // 1. Create a Google Sheet with columns: Timestamp, Name, Destination
+    // 2. Go to Extensions > Apps Script
+    // 3. Paste this code and deploy as web app (see SETUP.md)
+    // 4. Replace the GOOGLE_SCRIPT_URL below with your deployed URL
+    
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwaB9SHJkVbXsRP0rhu-w6BTnTjnIW_gAawauDG3psbe727u-c6DmV_2Y1GmzWZkBDI/exec
+';
+    
+    let selectedDestination = null;
+    
+    function selectDestination(card) {
+      // Remove selection from all cards
+      document.querySelectorAll('.vote-card').forEach(c => c.classList.remove('selected'));
+      // Select the clicked card
+      card.classList.add('selected');
+      selectedDestination = card.dataset.destination;
+      // Enable submit button if name is also filled
+      updateSubmitButton();
+    }
+    
+    function updateSubmitButton() {
+      const name = document.getElementById('voter-name').value.trim();
+      const submitBtn = document.getElementById('submit-vote');
+      submitBtn.disabled = !(name && selectedDestination);
+    }
+    
+    // Listen for name input changes
+    document.getElementById('voter-name').addEventListener('input', updateSubmitButton);
+    
+    function showMessage(text, type) {
+      const msg = document.getElementById('vote-message');
+      msg.textContent = text;
+      msg.className = 'vote-message ' + type;
+    }
+    
+    async function submitVote() {
+      const name = document.getElementById('voter-name').value.trim();
+      if (!name || !selectedDestination) return;
+      
+      const submitBtn = document.getElementById('submit-vote');
+      submitBtn.disabled = true;
+      showMessage('Submitting your vote...', 'loading');
+      
+      // Check if Google Script URL is configured
+      if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        // Demo mode - just show success without actually saving
+        setTimeout(() => {
+          showVoteSuccess(name, selectedDestination, true);
+        }, 800);
+        return;
+      }
+      
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            destination: selectedDestination,
+            timestamp: new Date().toISOString()
+          })
+        });
+        
+        // no-cors means we can't read the response, but if no error, assume success
+        showVoteSuccess(name, selectedDestination, false);
+        
+      } catch (error) {
+        console.error('Vote submission error:', error);
+        showMessage('Oops! Something went wrong. Please try again.', 'error');
+        submitBtn.disabled = false;
+      }
+    }
+    
+    function showVoteSuccess(name, destination, isDemo) {
+      document.getElementById('vote-form-container').style.display = 'none';
+      document.getElementById('vote-results-container').style.display = 'block';
+      
+      const thankYouMsg = document.getElementById('thank-you-message');
+      if (isDemo) {
+        thankYouMsg.innerHTML = `Thanks, <strong>${name}</strong>! You voted for <strong>${destination}</strong>.<br><small style="color: var(--muted-teal);">(Demo mode - see SETUP.md to enable vote saving)</small>`;
+      } else {
+        thankYouMsg.innerHTML = `Thanks, <strong>${name}</strong>! Your vote for <strong>${destination}</strong> has been recorded.`;
+      }
+      
+      // Show mock results (replace with real data when connected)
+      showMockResults(destination);
+    }
+    
+    function showMockResults(userVote) {
+      const destinations = [
+        { name: '🌴 Puerto Rico', votes: Math.floor(Math.random() * 3) },
+        { name: '🏜️ Palm Springs', votes: Math.floor(Math.random() * 3) },
+        { name: '🤠 Texas Hill Country', votes: Math.floor(Math.random() * 3) },
+        { name: '⛷️ Salt Lake City', votes: Math.floor(Math.random() * 3) },
+        { name: '🏔️ Switzerland', votes: Math.floor(Math.random() * 3) },
+        { name: '🦜 Costa Rica', votes: Math.floor(Math.random() * 3) },
+        { name: '🏡 Blackberry Farm', votes: Math.floor(Math.random() * 3) },
+        { name: '🌅 Anna Maria', votes: Math.floor(Math.random() * 3) }
+      ];
+      
+      // Add user's vote
+      const userDest = destinations.find(d => d.name.includes(userVote.split(' ')[0]) || d.name.includes(userVote));
+      if (userDest) userDest.votes++;
+      
+      const maxVotes = Math.max(...destinations.map(d => d.votes), 1);
+      
+      const resultsHtml = destinations.map(d => `
+        <div class="result-item">
+          <div class="dest-name">${d.name}</div>
+          <div class="vote-count">${d.votes} vote${d.votes !== 1 ? 's' : ''}</div>
+          <div class="result-bar">
+            <div class="result-bar-fill" style="width: ${(d.votes / maxVotes) * 100}%"></div>
+          </div>
+        </div>
+      `).join('');
+      
+      document.getElementById('results-display').innerHTML = resultsHtml;
+    }
+    
+    function showVoteForm() {
+      document.getElementById('vote-form-container').style.display = 'block';
+      document.getElementById('vote-results-container').style.display = 'none';
+      // Reset form
+      document.getElementById('voter-name').value = '';
+      document.querySelectorAll('.vote-card').forEach(c => c.classList.remove('selected'));
+      selectedDestination = null;
+      document.getElementById('submit-vote').disabled = true;
+      document.getElementById('vote-message').className = 'vote-message';
+    }
+  </script>
+</body>
+</html>
