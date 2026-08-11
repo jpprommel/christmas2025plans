@@ -230,6 +230,8 @@
       gap: 1.5rem;
       margin-top: 2rem;
       max-width: 900px;
+      position: relative;
+      z-index: 10;
     }
     .vote-card {
       background: rgba(255,255,255,0.1);
@@ -239,6 +241,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 1rem;
+      position: relative;
+      z-index: 10;
     }
     .vote-card:hover {
       background: var(--muted-teal);
@@ -784,8 +788,7 @@
     // 3. Paste this code and deploy as web app (see SETUP.md)
     // 4. Replace the GOOGLE_SCRIPT_URL below with your deployed URL
     
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwaB9SHJkVbXsRP0rhu-w6BTnTjnIW_gAawauDG3psbe727u-c6DmV_2Y1GmzWZkBDI/exec
-';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwaB9SHJkVbXsRP0rhu-w6BTnTjnIW_gAawauDG3psbe727u-c6DmV_2Y1GmzWZkBDI/exec';
     
     let selectedDestination = null;
     
